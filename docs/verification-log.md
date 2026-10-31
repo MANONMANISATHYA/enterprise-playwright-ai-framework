@@ -1,10 +1,14 @@
 # Verification log
 
-| Date       | Check                   | Command                           | Result           |
-| ---------- | ----------------------- | --------------------------------- | ---------------- |
-| 2026-10-31 | Typecheck, lint, format | npm run check                     | clean            |
-| 2026-10-31 | UI suite                | npm test                          | 6 passed         |
-| 2026-10-31 | Tag filter              | npx playwright test --grep @smoke | 4 passed         |
-| 2026-10-31 | 1 vs 4 workers          | --workers=1 / --workers=4         | 6 passed each    |
-| 2026-10-31 | Repeat run              | --repeat-each=5                   | 30 passed        |
-| 2026-10-31 | Guardrail proof         | git commit of bad test            | rejected by hook |
+| Date       | Check                   | Command                                      | Result                          |
+| ---------- | ----------------------- | -------------------------------------------- | ------------------------------- |
+| 2026-10-31 | Typecheck, lint, format | npm run check                                | clean                           |
+| 2026-10-31 | UI suite                | npm test                                     | 6 passed                        |
+| 2026-10-31 | Tag filter              | npx playwright test --grep @smoke            | 4 passed                        |
+| 2026-10-31 | 1 vs 4 workers          | --workers=1 / --workers=4                    | 6 passed each                   |
+| 2026-10-31 | Repeat run              | --repeat-each=5                              | 30 passed                       |
+| 2026-10-31 | Guardrail proof         | git commit of bad test                       | rejected by hook                |
+| 2026-10-31 | Raw locator blocked     | npm run lint (added page.locator in a spec)  | failed: no-restricted-syntax    |
+| 2026-10-31 | Assertion sensitivity   | changed expected text to "xyz"               | 1 test failed with clear diff   |
+| 2026-10-31 | Direct import blocked   | npm run lint (added @playwright/test import) | failed: no-restricted-imports   |
+| 2026-10-31 | Locator isolation       | renamed username locator in LoginPage        | [add your result from the redo] |
