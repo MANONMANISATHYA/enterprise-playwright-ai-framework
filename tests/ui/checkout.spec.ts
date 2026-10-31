@@ -19,4 +19,13 @@ test.describe('checkout @regression', () => {
 
     await expect(checkoutPage.errorMessage).toContainText('First Name is required');
   });
+
+  test('missing last name is rejected', async ({ inventoryPage, cartPage, checkoutPage }) => {
+    await inventoryPage.addToCart('sauce-labs-backpack');
+    await inventoryPage.header.openCart();
+    await cartPage.checkout();
+    await checkoutPage.fillShipping({ firstName: 'Test', lastName: '', postalCode: '12345' });
+
+    await expect(checkoutPage.errorMessage).toContainText('Last Name is required');
+  });
 });
