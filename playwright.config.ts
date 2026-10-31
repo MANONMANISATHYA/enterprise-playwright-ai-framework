@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import { env } from './config/env';
 
 const isCI = env.TEST_ENV === 'ci' || !!process.env.CI;
+const useLocalApp = new URL(env.UI_BASE_URL).hostname === 'localhost';
 
 export default defineConfig({
   testDir: './tests',
@@ -26,4 +27,12 @@ export default defineConfig({
     navigationTimeout: 15_000,
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  webServer: useLocalApp
+    ? {
+        command: 'node target-app/server.cjs',
+        url: env.UI_BASE_URL,
+        reuseExistingServer: false,
+        timeout: 15_000,
+      }
+    : undefined,
 });

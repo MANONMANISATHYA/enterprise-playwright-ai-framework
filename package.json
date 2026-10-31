@@ -11,7 +11,9 @@
     "format:check": "prettier --check .",
     "test:smoke": "playwright test tests/ui/smoke.spec.ts",
     "check": "npm run typecheck && npm run lint && npm run format:check",
-    "prepare": "husky"
+    "prepare": "husky",
+    "app": "node target-app/server.cjs",
+    "defects": "tsx tools/defect-injection.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.1"
   },
