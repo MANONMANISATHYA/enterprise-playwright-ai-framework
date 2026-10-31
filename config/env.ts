@@ -5,6 +5,9 @@ const envSchema = z.object({
   TEST_ENV: z.enum(['local', 'ci']).default('local'),
   UI_BASE_URL: z.string().url().default('https://www.saucedemo.com'),
   API_BASE_URL: z.string().url().default('https://restful-booker.herokuapp.com'),
+  STANDARD_USER: z.string().default('standard_user'),
+  LOCKED_USER: z.string().default('locked_out_user'),
+  DEMO_PASSWORD: z.string().default('secret_sauce'),
 });
 
 export type Env = z.infer<typeof envSchema>;

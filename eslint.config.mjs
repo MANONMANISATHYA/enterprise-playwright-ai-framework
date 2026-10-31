@@ -31,6 +31,29 @@ export default tseslint.config(
     },
   },
   {
+    files: ['tests/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@playwright/test',
+              message: 'Import test and expect from src/fixtures instead.',
+            },
+          ],
+        },
+      ],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "CallExpression[callee.property.name='locator']",
+          message: 'No raw locators in tests. Add them to a page object.',
+        },
+      ],
+    },
+  },
+  {
     files: ['eslint.config.mjs'],
     ...tseslint.configs.disableTypeChecked,
   },

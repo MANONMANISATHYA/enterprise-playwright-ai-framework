@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '../../src/fixtures';
 
 test.describe('smoke', () => {
   test('login page renders its core elements', async ({ page }) => {
