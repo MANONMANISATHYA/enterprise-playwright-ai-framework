@@ -13,8 +13,8 @@ export class LoginPage {
     this.errorMessage = page.getByTestId('error');
   }
 
-  async goto(): Promise<void> {
-    await this.page.goto('/');
+  async goto(path = '/'): Promise<void> {
+    await this.page.goto(path);
   }
 
   async login(user: string, password: string): Promise<void> {
