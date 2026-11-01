@@ -21,6 +21,13 @@ const DEFECTS: Defect[] = [
   { id: 'logout-keeps-session', description: 'Logout does not end the session' },
   { id: 'wrong-confirmation-text', description: 'Order confirmation text is wrong' },
   { id: 'no-lastname-validation', description: 'Checkout accepts an empty last name' },
+  { id: 'api-missing-field', description: 'Product API omits the price field' },
+  { id: 'api-token-leaks-password', description: 'Token response includes the password' },
+  { id: 'api-no-auth-products', description: 'Products API works without a token' },
+  { id: 'api-wrong-status-create', description: 'Creating an order returns 200 instead of 201' },
+  { id: 'api-total-wrong', description: 'Order total ignores the quantity' },
+  { id: 'api-order-idor', description: "A user can read another user's order" },
+  { id: 'api-delete-always-204', description: 'Deleting a missing order returns 204' },
 ];
 
 interface Spec {
