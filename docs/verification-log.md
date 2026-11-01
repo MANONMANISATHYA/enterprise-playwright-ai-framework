@@ -12,3 +12,5 @@
 | 2026-10-31 | Assertion sensitivity   | changed expected text to "xyz"               | 1 test failed with clear diff   |
 | 2026-10-31 | Direct import blocked   | npm run lint (added @playwright/test import) | failed: no-restricted-imports   |
 | 2026-10-31 | Locator isolation       | renamed username locator in LoginPage        | [add your result from the redo] |
+
+Step 6 (API layer): npm run test:api → 16 passed; npm test → 34 passed; npm run defects → 15 of 15 caught (8 UI, 7 API). Commits d77e0b8, 94824b7.
