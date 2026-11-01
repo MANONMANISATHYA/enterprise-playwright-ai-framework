@@ -26,6 +26,7 @@ const PASSWORD = 'secret_sauce';
 const USERS = {
   standard_user: { locked: false },
   locked_out_user: { locked: true },
+  second_user: { locked: false },
 };
 
 const slugify = (name) =>
@@ -71,7 +72,7 @@ const parseCookies = (header) => {
   return cookies;
 };
 
-const readForm = (req) =>
+const readText = (req) =>
   new Promise((resolve, reject) => {
     let body = '';
     req.on('data', (chunk) => {
@@ -81,9 +82,20 @@ const readForm = (req) =>
         req.destroy();
       }
     });
-    req.on('end', () => resolve(new URLSearchParams(body)));
+    req.on('end', () => resolve(body));
     req.on('error', reject);
   });
+
+const readForm = async (req) => new URLSearchParams(await readText(req));
+
+/** Parsed JSON body, or undefined when the body is not valid JSON. */
+const readJson = async (req) => {
+  try {
+    return JSON.parse(await readText(req));
+  } catch {
+    return undefined;
+  }
+};
 
 const getSession = (req) => sessions.get(parseCookies(req.headers.cookie).session);
 
@@ -255,11 +267,139 @@ const handleLogin = (form) => {
   return { username };
 };
 
+/** Bearer token -> username. API tokens are separate from browser sessions. */
+const tokens = new Map();
+/** order id -> { id, owner, items, total } */
+const orders = new Map();
+let nextOrderId = 1;
+
+const sendJson = (res, status, body) => {
+  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.end(JSON.stringify(body));
+};
+const sendNoContent = (res) => {
+  res.writeHead(204);
+  res.end();
+};
+const sendError = (res, status, error, message) => sendJson(res, status, { error, message });
+
+const apiProduct = (product, index) => {
+  const body = { id: index + 1, name: product.name, price: product.price };
+  if (hasDefect('api-missing-field')) delete body.price;
+  return body;
+};
+
+const apiOrder = (order) => ({
+  id: order.id,
+  status: 'created',
+  items: order.items,
+  total: order.total,
+});
+
+const validateOrder = (body) => {
+  if (!body || typeof body !== 'object' || !Array.isArray(body.items) || body.items.length === 0) {
+    return 'items must be a non-empty array';
+  }
+  for (const item of body.items) {
+    if (!item || !Number.isInteger(item.productId) || !PRODUCTS[item.productId - 1]) {
+      return 'every item needs a known productId';
+    }
+    if (!Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 99) {
+      return 'quantity must be an integer from 1 to 99';
+    }
+  }
+  return null;
+};
+
+const handleApi = async (req, res, url) => {
+  const path = url.pathname;
+  const method = req.method || 'GET';
+
+  if (method === 'POST' && path === '/api/auth/token') {
+    const body = await readJson(req);
+    if (!body || typeof body !== 'object') {
+      return sendError(res, 400, 'invalid_json', 'Body must be a JSON object');
+    }
+    const { username, password } = body;
+    if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
+      return sendError(res, 400, 'validation_error', 'username and password are required');
+    }
+    const user = Object.hasOwn(USERS, username) ? USERS[username] : undefined;
+    if (!user || password !== PASSWORD) {
+      return sendError(res, 401, 'invalid_credentials', 'Unknown user or wrong password');
+    }
+    if (user.locked && !hasDefect('locked-user-can-login')) {
+      return sendError(res, 403, 'locked_out', 'This user has been locked out');
+    }
+    const token = crypto.randomUUID();
+    tokens.set(token, username);
+    const response = { token, expiresIn: 3600 };
+    if (hasDefect('api-token-leaks-password')) response.password = password;
+    return sendJson(res, 200, response);
+  }
+
+  const bearer = /^Bearer (.+)$/.exec(req.headers.authorization || '');
+  const user = bearer ? tokens.get(bearer[1]) : undefined;
+  const openProducts =
+    method === 'GET' && path.startsWith('/api/products') && hasDefect('api-no-auth-products');
+  if (!user && !openProducts) {
+    return sendError(res, 401, 'unauthorized', 'A valid bearer token is required');
+  }
+
+  if (method === 'GET' && path === '/api/products') {
+    return sendJson(res, 200, { products: PRODUCTS.map(apiProduct) });
+  }
+
+  const productMatch = /^\/api\/products\/(\d+)$/.exec(path);
+  if (method === 'GET' && productMatch) {
+    const index = Number(productMatch[1]) - 1;
+    const product = PRODUCTS[index];
+    if (!product) return sendError(res, 404, 'not_found', 'Product not found');
+    return sendJson(res, 200, apiProduct(product, index));
+  }
+
+  if (method === 'POST' && path === '/api/orders') {
+    const body = await readJson(req);
+    const problem = validateOrder(body);
+    if (problem) return sendError(res, 400, 'validation_error', problem);
+    const items = body.items.map(({ productId, quantity }) => ({ productId, quantity }));
+    const sum = items.reduce((total, item) => {
+      const quantity = hasDefect('api-total-wrong') ? 1 : item.quantity;
+      return total + PRODUCTS[item.productId - 1].price * quantity;
+    }, 0);
+    const order = { id: nextOrderId++, owner: user, items, total: Math.round(sum * 100) / 100 };
+    orders.set(order.id, order);
+    return sendJson(res, hasDefect('api-wrong-status-create') ? 200 : 201, apiOrder(order));
+  }
+
+  const orderMatch = /^\/api\/orders\/(\d+)$/.exec(path);
+  if (orderMatch) {
+    const order = orders.get(Number(orderMatch[1]));
+    const visible = Boolean(order) && (order.owner === user || hasDefect('api-order-idor'));
+    if (method === 'GET') {
+      if (!visible) return sendError(res, 404, 'not_found', 'Order not found');
+      return sendJson(res, 200, apiOrder(order));
+    }
+    if (method === 'DELETE') {
+      if (!visible) {
+        if (hasDefect('api-delete-always-204')) return sendNoContent(res);
+        return sendError(res, 404, 'not_found', 'Order not found');
+      }
+      orders.delete(order.id);
+      return sendNoContent(res);
+    }
+  }
+
+  return sendError(res, 404, 'not_found', 'Unknown API route');
+};
+
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url || '/', 'http://localhost');
     const path = url.pathname;
     const method = req.method || 'GET';
+
+    if (path.startsWith('/api/')) return await handleApi(req, res, url);
 
     if (method === 'GET' && path === '/') {
       const from = url.searchParams.get('from');

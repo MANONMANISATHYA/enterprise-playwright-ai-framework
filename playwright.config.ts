@@ -2,7 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 import { env } from './config/env';
 
 const isCI = env.TEST_ENV === 'ci' || !!process.env.CI;
-const useLocalApp = new URL(env.UI_BASE_URL).hostname === 'localhost';
+
+const isLocalUrl = (url: string): boolean => new URL(url).hostname === 'localhost';
+// Start the bundled app when either the UI or the API points at localhost.
+const localAppUrl = [env.UI_BASE_URL, env.API_BASE_URL].find(isLocalUrl);
 
 export default defineConfig({
   testDir: './tests',
@@ -27,10 +30,10 @@ export default defineConfig({
     navigationTimeout: 15_000,
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: useLocalApp
+  webServer: localAppUrl
     ? {
         command: 'node target-app/server.cjs',
-        url: env.UI_BASE_URL,
+        url: localAppUrl,
         reuseExistingServer: false,
         timeout: 15_000,
       }
