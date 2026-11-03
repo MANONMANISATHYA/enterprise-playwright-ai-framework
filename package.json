@@ -14,7 +14,8 @@
     "prepare": "husky",
     "app": "node target-app/server.cjs",
     "defects": "tsx tools/defect-injection.ts",
-    "test:api": "playwright test --grep @api"
+    "test:api": "playwright test --grep @api",
+    "test:unit": "playwright test --grep @unit"
   },
   "keywords": [],
   "author": "",

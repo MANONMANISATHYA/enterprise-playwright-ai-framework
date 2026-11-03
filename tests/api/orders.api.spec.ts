@@ -1,5 +1,6 @@
-import { errorSchema, orderSchema } from '../../src/api/schemas';
+import { errorSchema, orderSchema, productSchema } from '../../src/api/schemas';
 import { parseResponse } from '../../src/api/validate';
+import { buildOrderRequest } from '../../src/data/factories';
 import { expect, test } from '../../src/fixtures';
 
 // Product 1 costs 29.99, so two of them total 59.98.
@@ -63,4 +64,20 @@ test.describe('orders API @api', () => {
 
     expect(response.status).toBe(404);
   });
+
+  for (const quantity of [1, 3, 10]) {
+    test(`order total scales with quantity (${String(quantity)})`, async ({ authApi }) => {
+      const product = parseResponse(productSchema, (await authApi.getProduct(1)).body);
+
+      const response = await authApi.createOrder(
+        buildOrderRequest({ items: [{ productId: product.id, quantity }] }),
+      );
+
+      expect(response.status).toBe(201);
+      expect(parseResponse(orderSchema, response.body).total).toBeCloseTo(
+        product.price * quantity,
+        2,
+      );
+    });
+  }
 });

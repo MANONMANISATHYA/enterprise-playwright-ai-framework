@@ -1,3 +1,4 @@
+import { buildShippingInfo } from '../../src/data/factories';
 import { expect, test } from '../../src/fixtures';
 
 test.describe('checkout @regression', () => {
@@ -5,7 +6,7 @@ test.describe('checkout @regression', () => {
     await inventoryPage.addToCart('sauce-labs-backpack');
     await inventoryPage.header.openCart();
     await cartPage.checkout();
-    await checkoutPage.fillShipping({ firstName: 'Test', lastName: 'User', postalCode: '12345' });
+    await checkoutPage.fillShipping(buildShippingInfo());
     await checkoutPage.finish();
 
     await expect(checkoutPage.confirmation).toHaveText('Thank you for your order!');
@@ -15,7 +16,7 @@ test.describe('checkout @regression', () => {
     await inventoryPage.addToCart('sauce-labs-backpack');
     await inventoryPage.header.openCart();
     await cartPage.checkout();
-    await checkoutPage.fillShipping({ firstName: '', lastName: 'User', postalCode: '12345' });
+    await checkoutPage.fillShipping(buildShippingInfo({ firstName: '' }));
 
     await expect(checkoutPage.errorMessage).toContainText('First Name is required');
   });
@@ -24,7 +25,7 @@ test.describe('checkout @regression', () => {
     await inventoryPage.addToCart('sauce-labs-backpack');
     await inventoryPage.header.openCart();
     await cartPage.checkout();
-    await checkoutPage.fillShipping({ firstName: 'Test', lastName: '', postalCode: '12345' });
+    await checkoutPage.fillShipping(buildShippingInfo({ lastName: '' }));
 
     await expect(checkoutPage.errorMessage).toContainText('Last Name is required');
   });
