@@ -16,3 +16,5 @@
 Step 6 (API layer): npm run test:api → 16 passed; npm test → 34 passed; npm run defects → 15 of 15 caught (8 UI, 7 API). Commits d77e0b8, 94824b7.
 
 Step 7 (data builders): npm run test:unit → 4 passed; npm test → 41 passed; npm run defects → 15 of 15 caught.
+
+Step 8 (flakiness): npm run test:unit → 8 passed; npm run burn-in → 45 stable of 45; with flaky-login injected → 5 not stable (see docs/burn-in-flaky-proof.md). Commit b787790.
