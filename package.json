@@ -17,13 +17,15 @@
     "test:api": "playwright test --grep @api",
     "test:unit": "playwright test --grep @unit",
     "burn-in": "tsx tools/burn-in.ts",
-    "test:quarantine": "playwright test --grep @quarantine"
+    "test:quarantine": "playwright test --grep @quarantine",
+    "test:a11y": "playwright test --grep @a11y"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.6",

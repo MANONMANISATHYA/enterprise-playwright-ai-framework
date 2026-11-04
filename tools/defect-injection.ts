@@ -3,8 +3,8 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 /**
- * Runs the UI suite once per injected defect against the self-hosted target app
- * and records which defects the suite caught. Results come from real runs only.
+ * Runs the full suite (UI and API) once per injected defect against the self-hosted
+ * target app and records which defects the suite caught. Results come from real runs only.
  */
 
 interface Defect {
@@ -28,6 +28,7 @@ const DEFECTS: Defect[] = [
   { id: 'api-total-wrong', description: 'Order total ignores the quantity' },
   { id: 'api-order-idor', description: "A user can read another user's order" },
   { id: 'api-delete-always-204', description: 'Deleting a missing order returns 204' },
+  { id: 'a11y-select-unlabelled', description: 'Sort dropdown has no accessible name' },
 ];
 
 interface Spec {

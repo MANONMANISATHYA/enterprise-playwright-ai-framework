@@ -1,5 +1,6 @@
 import { test as base, expect, type PlaywrightWorkerArgs } from '@playwright/test';
 import { env } from '../../config/env';
+import { scanPage, type A11yViolation } from '../a11y/scan';
 import { ApiClient } from '../api/ApiClient';
 import { CartPage } from '../pages/CartPage';
 import { CheckoutPage } from '../pages/CheckoutPage';
@@ -11,6 +12,8 @@ type Fixtures = {
   inventoryPage: InventoryPage;
   cartPage: CartPage;
   checkoutPage: CheckoutPage;
+  /** Runs an accessibility scan of the current page and returns the violations. */
+  a11y: () => Promise<A11yViolation[]>;
   /** API client with no token. */
   api: ApiClient;
   /** API client logged in as the standard user. */
@@ -54,6 +57,9 @@ export const test = base.extend<Fixtures>({
   },
   checkoutPage: async ({ page }, use) => {
     await use(new CheckoutPage(page));
+  },
+  a11y: async ({ page }, use) => {
+    await use(() => scanPage(page));
   },
   api: async ({ playwright }, use) => {
     await withApiClient(playwright, undefined, use);

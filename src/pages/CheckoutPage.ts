@@ -9,7 +9,7 @@ export interface ShippingInfo {
 export class CheckoutPage {
   readonly errorMessage: Locator;
   readonly confirmation: Locator;
-  private readonly firstName: Locator;
+  readonly firstName: Locator;
   private readonly lastName: Locator;
   private readonly postalCode: Locator;
   private readonly continueButton: Locator;

@@ -193,9 +193,10 @@ const inventoryPage = (session, sort) => {
         `<option value="${value}"${value === sort ? ' selected' : ''}>${text}</option>`,
     )
     .join('');
+  const sortLabel = hasDefect('a11y-select-unlabelled') ? '' : ' aria-label="Sort products"';
   return layout(`${header(session)}
 <span data-test="title">Products</span>
-<select data-test="product-sort-container" onchange="location.search = '?sort=' + this.value">${options}</select>
+<select data-test="product-sort-container"${sortLabel} onchange="location.search = '?sort=' + this.value">${options}</select>
 ${items}`);
 };
 

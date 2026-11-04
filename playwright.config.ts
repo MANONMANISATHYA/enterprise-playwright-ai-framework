@@ -6,9 +6,11 @@ const isCI = env.TEST_ENV === 'ci' || !!process.env.CI;
 const isLocalUrl = (url: string): boolean => new URL(url).hostname === 'localhost';
 // Start the bundled app when either the UI or the API points at localhost.
 const localAppUrl = [env.UI_BASE_URL, env.API_BASE_URL].find(isLocalUrl);
+const uiIsLocal = isLocalUrl(env.UI_BASE_URL);
 
 export default defineConfig({
   testDir: './tests',
+  testIgnore: uiIsLocal ? undefined : '**/accessibility.spec.ts',
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 2 : 0,
