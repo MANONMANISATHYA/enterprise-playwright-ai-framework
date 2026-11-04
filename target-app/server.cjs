@@ -22,6 +22,9 @@ const DEFECTS = new Set(
 );
 const hasDefect = (id) => DEFECTS.has(id);
 
+/** Counts successful logins so the flaky-login defect can fail every third one. */
+let loginCount = 0;
+
 const PASSWORD = 'secret_sauce';
 const USERS = {
   standard_user: { locked: false },
@@ -415,6 +418,9 @@ const server = http.createServer(async (req, res) => {
     if (method === 'POST' && path === '/login') {
       const result = handleLogin(await readForm(req));
       if (result.error) return send(res, 200, loginPage(result.error));
+      if (hasDefect('flaky-login') && ++loginCount % 3 === 0) {
+        return send(res, 200, loginPage('Epic sadface: Something went wrong, please try again'));
+      }
       const token = crypto.randomUUID();
       sessions.set(token, { user: result.username, cart: [], shipping: null });
       return redirect(res, '/inventory.html', {

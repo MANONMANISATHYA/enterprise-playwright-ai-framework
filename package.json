@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test",
+    "test": "playwright test --grep-invert @quarantine",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -15,7 +15,9 @@
     "app": "node target-app/server.cjs",
     "defects": "tsx tools/defect-injection.ts",
     "test:api": "playwright test --grep @api",
-    "test:unit": "playwright test --grep @unit"
+    "test:unit": "playwright test --grep @unit",
+    "burn-in": "tsx tools/burn-in.ts",
+    "test:quarantine": "playwright test --grep @quarantine"
   },
   "keywords": [],
   "author": "",
