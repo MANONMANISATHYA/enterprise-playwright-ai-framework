@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Nightly burn-in at 02:00 UTC.
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      run_defects:
+        description: 'Also run the defect-injection experiment (about 10 minutes)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Skip git hooks during npm ci.
+  HUSKY: '0'
+  # Tests run against the bundled app, not the public demo site, so a third-party outage cannot fail the build.
+  UI_BASE_URL: http://localhost:3000
+  API_BASE_URL: http://localhost:3000
+
+jobs:
+  quality:
+    name: Lint, types and formatting
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+
+  test:
+    name: Tests (shard ${{ matrix.shard }})
+    needs: quality
+    # The nightly schedule runs the burn-in job instead.
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['1/2', '2/2']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run tests
+        run: npx playwright test --grep-invert @quarantine --shard=${{ matrix.shard }}
+      - name: Upload report and traces
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ strategy.job-index }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+          if-no-files-found: ignore
+
+  burn-in:
+    name: Nightly burn-in
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Burn-in (10 repeats)
+        run: npm run burn-in -- 10
+      - name: Upload burn-in results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: burn-in-results
+          path: docs/burn-in-results.md
+          retention-days: 30
+          if-no-files-found: ignore
+
+  defects:
+    name: Defect-injection experiment
+    if: github.event_name == 'workflow_dispatch' && inputs.run_defects
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run defect injection
+        run: npm run defects
+      - name: Upload results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: defect-injection-results
+          path: docs/defect-injection-results.md
+          retention-days: 30
+          if-no-files-found: ignore
