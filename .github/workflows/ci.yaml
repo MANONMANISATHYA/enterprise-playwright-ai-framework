@@ -65,7 +65,7 @@ jobs:
         run: npx playwright test --grep-invert @quarantine --shard=${{ matrix.shard }}
       - name: Upload report and traces
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report-${{ strategy.job-index }}
           path: |
@@ -91,7 +91,7 @@ jobs:
         run: npm run burn-in -- 10
       - name: Upload burn-in results
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: burn-in-results
           path: docs/burn-in-results.md
@@ -115,7 +115,7 @@ jobs:
         run: npm run defects
       - name: Upload results
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: defect-injection-results
           path: docs/defect-injection-results.md
