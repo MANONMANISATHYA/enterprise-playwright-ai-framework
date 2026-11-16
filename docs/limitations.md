@@ -11,3 +11,5 @@
 - npm audit reports moderate findings in dev dependencies; not yet triaged.
 
 API tests import src/api/schemas and src/api/validate directly. This is deliberate: contracts are data, not behaviour. All actions still go through fixtures.
+
+TypeScript is held below 7: Dependabot PR #4 tried to upgrade to 7.0.2, but typescript-eslint 8.72.2 requires TypeScript below 6.1 and npm refused the install. CI caught it before merge. Dependabot is told to skip TypeScript major updates until typescript-eslint supports 7.
