@@ -20,3 +20,5 @@ Step 7 (data builders): npm run test:unit → 4 passed; npm test → 41 passed; 
 Step 8 (flakiness): npm run test:unit → 8 passed; npm run burn-in → 45 stable of 45; with flaky-login injected → 5 not stable (see docs/burn-in-flaky-proof.md). Commit b787790.
 
 Step 9 (accessibility): first scan found 1 critical violation (select-name, product list); fixed with aria-label; test:a11y → 4 passed; defects → 16 of 16 caught.
+
+Post-upgrade (2026-11-18): npm test → 45 passed; test:a11y → 4 passed; defects → 16 of 16 caught; CI green on main.
