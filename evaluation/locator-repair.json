@@ -1,0 +1,30 @@
+{
+  "labelledBy": "Claude (AI assistant). The page snapshots are small invented examples, not captures from a real failure. A human must review every label and then set reviewed to true.",
+  "reviewed": false,
+  "cases": [
+    {
+      "name": "login button renamed",
+      "locator": "getByTestId('login-button')",
+      "expectedLocator": "getByTestId('sign-in-button')",
+      "snapshot": "<html><body>\n<input data-test=\"username\" placeholder=\"Username\">\n<input data-test=\"password\" placeholder=\"Password\">\n<button data-test=\"sign-in-button\">Login</button>\n</body></html>"
+    },
+    {
+      "name": "error message renamed",
+      "locator": "getByTestId('error')",
+      "expectedLocator": "getByTestId('error-message')",
+      "snapshot": "<html><body>\n<input data-test=\"username\">\n<div data-test=\"error-message\">Epic sadface</div>\n</body></html>"
+    },
+    {
+      "name": "nothing close in the page",
+      "locator": "getByTestId('logout-link')",
+      "expectedLocator": null,
+      "snapshot": "<html><body>\n<input data-test=\"username\">\n<input data-test=\"password\">\n</body></html>"
+    },
+    {
+      "name": "old test id still present",
+      "locator": "getByTestId('username')",
+      "expectedLocator": null,
+      "snapshot": "<html><body>\n<input data-test=\"username\">\n<input data-test=\"password\">\n</body></html>"
+    }
+  ]
+}

@@ -23,7 +23,9 @@
     "ai": "tsx tools/ai.ts",
     "analyse": "tsx tools/analyse-failures.ts",
     "testcases:generate": "tsx tools/generate-testcases.ts",
-    "testcases:export": "tsx tools/export-testcases.ts"
+    "testcases:export": "tsx tools/export-testcases.ts",
+    "ai:repair": "tsx tools/repair-locator.ts",
+    "ai:eval": "tsx tools/evaluate-ai.ts"
   },
   "keywords": [],
   "author": "",

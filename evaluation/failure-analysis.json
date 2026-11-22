@@ -1,0 +1,90 @@
+{
+  "labelledBy": "Claude (AI assistant), written while building the project. A human must review every label and then set reviewed to true.",
+  "reviewed": false,
+  "cases": [
+    {
+      "name": "browser build missing",
+      "source": "real run",
+      "expected": "environment",
+      "errorText": "browserType.launch: Executable doesn't exist at C:\\Users\\x\\ms-playwright\\chromium_headless_shell-1254\\chrome-headless-shell.exe\nLooks like Playwright Test or Playwright was just installed or updated. Please run the following command to download new browsers: npx playwright install"
+    },
+    {
+      "name": "products API omits price",
+      "source": "real run",
+      "expected": "contract",
+      "errorText": "Error: Response does not match the schema:\n  - products.0.price: Invalid input: expected number, received undefined\n  - products.1.price: Invalid input: expected number, received undefined"
+    },
+    {
+      "name": "error banner never appears",
+      "source": "real run",
+      "expected": "element-not-found",
+      "errorText": "Error: expect(locator).toContainText(expected) failed\n\nLocator: getByTestId('error')\nExpected substring: \"Last Name is required\"\nTimeout: 5000ms\nError: element(s) not found"
+    },
+    {
+      "name": "deep equality difference",
+      "source": "real run",
+      "expected": "assertion-mismatch",
+      "errorText": "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 10"
+    },
+    {
+      "name": "two buttons match",
+      "source": "typical Playwright message",
+      "expected": "locator-ambiguous",
+      "errorText": "Error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('button')\nError: strict mode violation: getByRole('button') resolved to 6 elements"
+    },
+    {
+      "name": "wrong order total",
+      "source": "typical Playwright message",
+      "expected": "assertion-mismatch",
+      "errorText": "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: 59.98\nReceived: 29.99"
+    },
+    {
+      "name": "whole test times out",
+      "source": "typical Playwright message",
+      "expected": "timeout",
+      "errorText": "Test timeout of 30000ms exceeded."
+    },
+    {
+      "name": "API server not running",
+      "source": "typical Playwright message",
+      "expected": "environment",
+      "errorText": "apiRequestContext.post: connect ECONNREFUSED 127.0.0.1:3000"
+    },
+    {
+      "name": "page cannot be reached",
+      "source": "typical Playwright message",
+      "expected": "environment",
+      "errorText": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/"
+    },
+    {
+      "name": "code bug in the test",
+      "source": "typical Playwright message",
+      "expected": "unknown",
+      "errorText": "TypeError: Cannot read properties of undefined (reading 'price')"
+    },
+    {
+      "name": "network connection times out",
+      "source": "typical Playwright message",
+      "expected": "environment",
+      "errorText": "apiRequestContext.get: connect ETIMEDOUT 10.0.0.5:3000"
+    },
+    {
+      "name": "wrong page after login",
+      "source": "typical Playwright message",
+      "expected": "assertion-mismatch",
+      "errorText": "Error: expect(page).toHaveURL(expected) failed\n\nExpected pattern: /inventory\\.html/\nReceived string:  \"http://localhost:3000/\"\nTimeout: 5000ms"
+    },
+    {
+      "name": "click waits for a missing button",
+      "source": "typical Playwright message",
+      "expected": "element-not-found",
+      "errorText": "locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByTestId('checkout')"
+    },
+    {
+      "name": "wrong number of items",
+      "source": "typical Playwright message",
+      "expected": "assertion-mismatch",
+      "errorText": "Error: expect(locator).toHaveCount(expected) failed\n\nLocator:  getByTestId('inventory-item')\nExpected: 6\nReceived: 0\nTimeout:  5000ms"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "locator-repair-4d47926c",
+  "kind": "locator-repair",
+  "status": "pending",
+  "createdAt": "2026-11-22T13:14:29.604Z",
+  "provider": "offline",
+  "evidence": ["evaluation\\samples\\login-page-renamed.html", "getByTestId('login-button')"],
+  "payload": {
+    "failingLocator": "getByTestId('login-button')",
+    "suggestedLocator": "getByTestId('sign-in-button')",
+    "strategy": "testid",
+    "reasoning": "\"sign-in-button\" is the test id in the snapshot that shares the most words with \"login-button\" (0.25 word overlap). Check it is the same element before using it.",
+    "confidence": "low",
+    "note": "Apply by hand in the page object after review. This proposal changes no file."
+  }
+}

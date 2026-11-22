@@ -2,6 +2,7 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } fr
 import { resolve } from 'node:path';
 import { FAILURE_CATEGORIES } from '../src/reporting/failures';
 import { summariseRuns, type Report as BurnInReport } from '../src/reporting/flakiness';
+import { summariseEvaluation, type EvaluationReport } from '../src/ai/evaluation';
 import { computeMetrics, type Report, type RunMetrics } from '../src/reporting/metrics';
 
 /**
@@ -14,6 +15,7 @@ import { computeMetrics, type Report, type RunMetrics } from '../src/reporting/m
 const REPORT_DIR = resolve('reports');
 const HISTORY_FILE = resolve(REPORT_DIR, 'metrics-history.jsonl');
 const BURN_IN_FILE = resolve(REPORT_DIR, 'burn-in.json');
+const AI_EVALUATION_FILE = resolve(REPORT_DIR, 'ai-evaluation.json');
 const TREND_LENGTH = 10;
 
 type HistoryEntry = Pick<
@@ -39,6 +41,13 @@ function burnInSummary(): string {
   const summaries = summariseRuns(report);
   const unstable = summaries.filter((s) => s.verdict !== 'stable');
   return `${String(summaries.length)} tests judged, ${String(unstable.length)} not stable (from the last burn-in).`;
+}
+
+function aiEvaluationSummary(): string {
+  if (!existsSync(AI_EVALUATION_FILE)) return 'not measured yet. Run `npm run ai:eval`.';
+  return summariseEvaluation(
+    JSON.parse(readFileSync(AI_EVALUATION_FILE, 'utf8')) as EvaluationReport,
+  );
 }
 
 function main(): void {
@@ -76,7 +85,7 @@ function main(): void {
     `- Pass rate: ${percent(metrics.passed, metrics.total - metrics.skipped)}`,
     `- Run duration: ${seconds(metrics.durationMs)}`,
     `- Burn-in: ${burnInSummary()}`,
-    '- AI evaluation quality: not measured yet (no AI layer in this repository).',
+    `- AI evaluation quality: ${aiEvaluationSummary()}`,
     '',
     '## Slowest tests',
     '',
