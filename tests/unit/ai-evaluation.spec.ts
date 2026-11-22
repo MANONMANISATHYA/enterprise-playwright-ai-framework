@@ -72,7 +72,7 @@ test.describe('AI evaluation @unit', () => {
     expect(result.rejected).toBe(0);
   });
 
-  test('generation coverage is counted per criterion', async () => {
+  test('coverage of the criteria is counted per criterion', async () => {
     const requirements = parseRequirements(
       readFileSync('requirements/checkout-and-login.md', 'utf8'),
     );
