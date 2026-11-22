@@ -19,7 +19,8 @@
     "burn-in": "tsx tools/burn-in.ts",
     "test:quarantine": "playwright test --grep @quarantine",
     "test:a11y": "playwright test --grep @a11y",
-    "metrics": "tsx tools/metrics.ts"
+    "metrics": "tsx tools/metrics.ts",
+    "ai": "tsx tools/ai.ts"
   },
   "keywords": [],
   "author": "",

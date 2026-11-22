@@ -9,6 +9,10 @@ const envSchema = z.object({
   SECOND_USER: z.string().default('second_user'),
   LOCKED_USER: z.string().default('locked_out_user'),
   DEMO_PASSWORD: z.string().default('secret_sauce'),
+  // Optional AI layer. The core suite never reads these.
+  AI_PROVIDER: z.enum(['offline', 'anthropic']).default('offline'),
+  ANTHROPIC_API_KEY: z.string().optional(),
+  AI_MODEL: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
