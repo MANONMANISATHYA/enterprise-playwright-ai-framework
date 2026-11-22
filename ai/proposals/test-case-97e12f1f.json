@@ -1,0 +1,101 @@
+{
+  "id": "test-case-97e12f1f",
+  "kind": "test-case",
+  "status": "approved",
+  "createdAt": "2026-11-22T12:50:56.386Z",
+  "provider": "offline",
+  "evidence": ["requirements\\checkout-and-login.md", "REQ-001"],
+  "payload": {
+    "requirementId": "REQ-001",
+    "title": "Login",
+    "uncovered": [],
+    "testCases": [
+      {
+        "title": "AC1 - A standard user who enters valid credentials reaches the product list.",
+        "type": "positive",
+        "area": "ui",
+        "priority": "high",
+        "criteria": ["AC1"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC1: A standard user who enters valid credentials reaches the product list."
+        ],
+        "expected": ["A standard user who enters valid credentials reaches the product list."],
+        "tags": ["@regression"]
+      },
+      {
+        "title": "AC2 - A locked-out user is rejected with an error message.",
+        "type": "negative",
+        "area": "ui",
+        "priority": "medium",
+        "criteria": ["AC2"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC2: A locked-out user is rejected with an error message."
+        ],
+        "expected": ["A locked-out user is rejected with an error message."],
+        "tags": ["@negative", "@regression"]
+      },
+      {
+        "title": "AC3 - A wrong password shows an error message and does not sign the user in.",
+        "type": "negative",
+        "area": "ui",
+        "priority": "medium",
+        "criteria": ["AC3"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC3: A wrong password shows an error message and does not sign the user in."
+        ],
+        "expected": ["A wrong password shows an error message and does not sign the user in."],
+        "tags": ["@negative", "@regression"]
+      },
+      {
+        "title": "AC4 - Submitting the form with an empty username is rejected with an error message.",
+        "type": "negative",
+        "area": "ui",
+        "priority": "medium",
+        "criteria": ["AC4"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC4: Submitting the form with an empty username is rejected with an error message."
+        ],
+        "expected": [
+          "Submitting the form with an empty username is rejected with an error message."
+        ],
+        "tags": ["@negative", "@regression"]
+      },
+      {
+        "title": "AC5 - Protected pages cannot be opened without signing in.",
+        "type": "negative",
+        "area": "ui",
+        "priority": "medium",
+        "criteria": ["AC5"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC5: Protected pages cannot be opened without signing in."
+        ],
+        "expected": ["Protected pages cannot be opened without signing in."],
+        "tags": ["@negative", "@regression"]
+      }
+    ]
+  },
+  "review": {
+    "at": "2026-11-22T12:52:21.169Z",
+    "note": "Reviewed against the criteria"
+  }
+}

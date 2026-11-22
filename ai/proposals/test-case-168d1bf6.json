@@ -1,0 +1,101 @@
+{
+  "id": "test-case-168d1bf6",
+  "kind": "test-case",
+  "status": "rejected",
+  "createdAt": "2026-11-22T12:50:56.392Z",
+  "provider": "offline",
+  "evidence": ["requirements\\checkout-and-login.md", "REQ-003"],
+  "payload": {
+    "requirementId": "REQ-003",
+    "title": "Orders API",
+    "uncovered": [],
+    "testCases": [
+      {
+        "title": "AC1 - Creating an order with a valid token returns status 201 and an order whose total equals price times quantity.",
+        "type": "positive",
+        "area": "api",
+        "priority": "high",
+        "criteria": ["AC1"],
+        "preconditions": [
+          "The service is running",
+          "A valid token for the standard user is available unless the case tests authentication"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC1: Creating an order with a valid token returns status 201 and an order whose total equals price times quantity."
+        ],
+        "expected": [
+          "Creating an order with a valid token returns status 201 and an order whose total equals price times quantity."
+        ],
+        "tags": ["@api"]
+      },
+      {
+        "title": "AC2 - Creating an order without a token is rejected with status 401.",
+        "type": "negative",
+        "area": "api",
+        "priority": "medium",
+        "criteria": ["AC2"],
+        "preconditions": [
+          "The service is running",
+          "A valid token for the standard user is available unless the case tests authentication"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC2: Creating an order without a token is rejected with status 401."
+        ],
+        "expected": ["Creating an order without a token is rejected with status 401."],
+        "tags": ["@api", "@negative"]
+      },
+      {
+        "title": "AC3 - An order with no items is rejected with status 400.",
+        "type": "negative",
+        "area": "api",
+        "priority": "medium",
+        "criteria": ["AC3"],
+        "preconditions": [
+          "The service is running",
+          "A valid token for the standard user is available unless the case tests authentication"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC3: An order with no items is rejected with status 400."
+        ],
+        "expected": ["An order with no items is rejected with status 400."],
+        "tags": ["@api", "@negative"]
+      },
+      {
+        "title": "AC4 - A user cannot read an order that belongs to another user.",
+        "type": "negative",
+        "area": "api",
+        "priority": "medium",
+        "criteria": ["AC4"],
+        "preconditions": [
+          "The service is running",
+          "A valid token for the standard user is available unless the case tests authentication"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC4: A user cannot read an order that belongs to another user."
+        ],
+        "expected": ["A user cannot read an order that belongs to another user."],
+        "tags": ["@api", "@negative"]
+      },
+      {
+        "title": "AC5 - Deleting an order removes it, so fetching it afterwards returns status 404.",
+        "type": "positive",
+        "area": "api",
+        "priority": "high",
+        "criteria": ["AC5"],
+        "preconditions": [
+          "The service is running",
+          "A valid token for the standard user is available unless the case tests authentication"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC5: Deleting an order removes it, so fetching it afterwards returns status 404."
+        ],
+        "expected": ["Deleting an order removes it, so fetching it afterwards returns status 404."],
+        "tags": ["@api"]
+      }
+    ]
+  },
+  "review": {
+    "at": "2026-11-22T12:52:32.619Z",
+    "note": "Rejected on purpose to test the filter"
+  }
+}

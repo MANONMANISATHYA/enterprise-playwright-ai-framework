@@ -1,0 +1,65 @@
+{
+  "id": "test-case-4b95978a",
+  "kind": "test-case",
+  "status": "pending",
+  "createdAt": "2026-11-22T12:50:56.389Z",
+  "provider": "offline",
+  "evidence": ["requirements\\checkout-and-login.md", "REQ-002"],
+  "payload": {
+    "requirementId": "REQ-002",
+    "title": "Checkout",
+    "uncovered": [],
+    "testCases": [
+      {
+        "title": "AC1 - A signed-in user with an item in the cart can complete an order and sees a confirmation.",
+        "type": "positive",
+        "area": "ui",
+        "priority": "high",
+        "criteria": ["AC1"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC1: A signed-in user with an item in the cart can complete an order and sees a confirmation."
+        ],
+        "expected": [
+          "A signed-in user with an item in the cart can complete an order and sees a confirmation."
+        ],
+        "tags": ["@regression"]
+      },
+      {
+        "title": "AC2 - Checkout is rejected with an error message when the first name is empty.",
+        "type": "negative",
+        "area": "ui",
+        "priority": "medium",
+        "criteria": ["AC2"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC2: Checkout is rejected with an error message when the first name is empty."
+        ],
+        "expected": ["Checkout is rejected with an error message when the first name is empty."],
+        "tags": ["@negative", "@regression"]
+      },
+      {
+        "title": "AC3 - Checkout is rejected with an error message when the last name is empty.",
+        "type": "negative",
+        "area": "ui",
+        "priority": "medium",
+        "criteria": ["AC3"],
+        "preconditions": [
+          "The application is running",
+          "The standard user is signed in unless the case is about signing in"
+        ],
+        "steps": [
+          "Carry out the behaviour described by AC3: Checkout is rejected with an error message when the last name is empty."
+        ],
+        "expected": ["Checkout is rejected with an error message when the last name is empty."],
+        "tags": ["@negative", "@regression"]
+      }
+    ]
+  }
+}

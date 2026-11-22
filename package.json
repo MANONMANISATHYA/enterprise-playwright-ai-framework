@@ -21,7 +21,9 @@
     "test:a11y": "playwright test --grep @a11y",
     "metrics": "tsx tools/metrics.ts",
     "ai": "tsx tools/ai.ts",
-    "analyse": "tsx tools/analyse-failures.ts"
+    "analyse": "tsx tools/analyse-failures.ts",
+    "testcases:generate": "tsx tools/generate-testcases.ts",
+    "testcases:export": "tsx tools/export-testcases.ts"
   },
   "keywords": [],
   "author": "",
