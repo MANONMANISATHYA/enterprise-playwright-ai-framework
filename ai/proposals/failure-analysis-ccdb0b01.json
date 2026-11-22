@@ -1,0 +1,28 @@
+{
+  "id": "failure-analysis-ccdb0b01",
+  "kind": "failure-analysis",
+  "status": "approved",
+  "createdAt": "2026-11-22T06:51:19.050Z",
+  "provider": "offline",
+  "evidence": [
+    "reports/results.json",
+    "api\\products.api.spec.ts > products API @api > authenticated user can list products"
+  ],
+  "payload": {
+    "test": "api\\products.api.spec.ts > products API @api > authenticated user can list products",
+    "baselineCategory": "contract",
+    "analysis": {
+      "category": "contract",
+      "summary": "An API response does not match the agreed schema.",
+      "likelyCause": "The service changed a field, left one out, or authentication failed.",
+      "suggestedNextStep": "Compare the response with the schema in src/api/schemas.ts and raise the difference with the API owner.",
+      "confidence": "medium"
+    },
+    "agreesWithBaseline": true,
+    "errorExcerpt": "Error: Response does not match the schema:\n  - products.0.price: Invalid input: expected number, received undefined\n  - products.1.price: Invalid input: expected number, received undefined\n  - products.2.price: Invalid input: expected number, received undefined\n  - products.3.price: Invalid input: expected number, received undefined\n  - products.4.price: Invalid input: expected number, received undefined\n  - products.5.price: Invalid input: expected number, received undefined"
+  },
+  "review": {
+    "at": "2026-11-22T06:53:23.173Z",
+    "note": "Correct: products API is missing price"
+  }
+}

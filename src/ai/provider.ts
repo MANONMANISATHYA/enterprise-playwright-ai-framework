@@ -1,4 +1,5 @@
 import { AnthropicProvider } from './anthropic';
+import { offlineHandlers } from './handlers';
 import { OfflineProvider } from './offline';
 
 /**
@@ -25,7 +26,7 @@ export interface AiSettings {
 }
 
 export function createProvider(settings: AiSettings): AiProvider {
-  if (settings.AI_PROVIDER === 'offline') return new OfflineProvider();
+  if (settings.AI_PROVIDER === 'offline') return new OfflineProvider(offlineHandlers);
 
   const apiKey = settings.ANTHROPIC_API_KEY?.trim();
   const model = settings.AI_MODEL?.trim();

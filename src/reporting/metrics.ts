@@ -49,9 +49,9 @@ export interface RunMetrics {
   failures: FailureRecord[];
 }
 
-type Outcome = 'passed' | 'failed' | 'flaky' | 'skipped';
+export type Outcome = 'passed' | 'failed' | 'flaky' | 'skipped';
 
-function outcomeOf(test: TestEntry): Outcome {
+export function outcomeOf(test: TestEntry): Outcome {
   switch (test.status) {
     case 'expected':
       return 'passed';

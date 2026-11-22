@@ -20,7 +20,8 @@
     "test:quarantine": "playwright test --grep @quarantine",
     "test:a11y": "playwright test --grep @a11y",
     "metrics": "tsx tools/metrics.ts",
-    "ai": "tsx tools/ai.ts"
+    "ai": "tsx tools/ai.ts",
+    "analyse": "tsx tools/analyse-failures.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,24 @@
+{
+  "id": "failure-analysis-640e96b9",
+  "kind": "failure-analysis",
+  "status": "pending",
+  "createdAt": "2026-11-22T06:51:19.051Z",
+  "provider": "offline",
+  "evidence": [
+    "reports/results.json",
+    "api\\products.api.spec.ts > products API @api > product by id returns that product"
+  ],
+  "payload": {
+    "test": "api\\products.api.spec.ts > products API @api > product by id returns that product",
+    "baselineCategory": "contract",
+    "analysis": {
+      "category": "contract",
+      "summary": "An API response does not match the agreed schema.",
+      "likelyCause": "The service changed a field, left one out, or authentication failed.",
+      "suggestedNextStep": "Compare the response with the schema in src/api/schemas.ts and raise the difference with the API owner.",
+      "confidence": "medium"
+    },
+    "agreesWithBaseline": true,
+    "errorExcerpt": "Error: Response does not match the schema:\n  - price: Invalid input: expected number, received undefined"
+  }
+}
