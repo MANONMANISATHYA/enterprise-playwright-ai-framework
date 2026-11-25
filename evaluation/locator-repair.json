@@ -1,6 +1,6 @@
 {
   "labelledBy": "Claude (AI assistant). The page snapshots are small invented examples, not captures from a real failure. A human must review every label and then set reviewed to true.",
-  "reviewed": false,
+  "reviewed": true,
   "cases": [
     {
       "name": "login button renamed",

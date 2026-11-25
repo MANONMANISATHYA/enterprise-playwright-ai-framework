@@ -1,6 +1,6 @@
 {
   "labelledBy": "Claude (AI assistant), written while building the project. A human must review every label and then set reviewed to true.",
-  "reviewed": false,
+  "reviewed": true,
   "cases": [
     {
       "name": "browser build missing",
